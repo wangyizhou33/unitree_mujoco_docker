@@ -1,42 +1,51 @@
-## Commands to run the demo
+## Running the Demo
 
-### 1 Build the docker image
+### 1. Build the Docker Image
 ```sh
 docker build -t unitree_mujoco .
 ```
-`unitree_mujoco` image name can be anything else.  
-Everything is compiled during the docker image building. 
+The image name `unitree_mujoco` can be customized. All necessary components are compiled during the Docker image build process.
 
-### 2 Launch the simulator
+### 2. Launch the Simulator
 
-```
+```sh
 docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all unitree_mujoco bash
 ```
 
-Note #1:  
-`-e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` is for GLFW to be initialized correctly in the container.  
+**Notes:**
+*   The flags `-e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` are required for GUI forwarding, allowing the simulation window to be displayed from the container.
+*   **GPU and CPU Support:** The current configuration is optimized for NVIDIA GPUs.
+    *   **With GPU:** The `dockerfile` uses `nvidia/opengl:base-ubuntu22.04` as the base image. The `--gpus all` flag is necessary in the `docker run` command. This requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) to be installed on the host machine.
+    *   **Without GPU:** For CPU-only execution, modify the `dockerfile` to use a base image like `ubuntu:22.04` and remove the `--gpus all` flag from the `docker run` command.
 
-Note #2:  
-I have a nvidia gpu device installed on my machine. So I am using `nvidia/opengl:base-ubuntu22.04` as the base image and `---gpus all` in the `docker run` command ([NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) needs to be installed on the host machine). If you don't have a gpu, I think `ubuntu:22.04` suffices as the base image and `---gpus all` should be dropped.
-
+Once inside the container, start the simulation:
 ```sh
 cd /unitree_mujoco/simulate/build/
 ./unitree_mujoco -r go2 -s scene_terrain.xml
 ```
 
-
-### 3 Run the go2 standing controller
-In the second terminal,
+### 3. Run the Go2 Standing Controller
+Open a second terminal and attach to the running container:
 ```sh
 docker exec -it <docker_container_id> bash
 ```
+Then, execute the standing controller:
 ```sh
 cd /unitree_mujoco/example/cpp/build
 ./stand_go2
 ```
 
-You should be able to see ![image](./docs/screenshot.jpg)
+A successful launch will display the following simulation environment:
+![image](./docs/screenshot.jpg)
 
 
 ### TODO
-Remove the local `mujoco-3.3.7` copy. Download the binary while building the image.
+- [ ] Refactor the `dockerfile` to download the MuJoCo binary during the image build process instead of relying on a local copy.
+
+
+### References
+[1] [unitreerobotics/unitree_mujoco](https://github.com/unitreerobotics/unitree_mujoco) GitHub repository
+
+[2] [unitreerobotics/unitree_sdk2](https://github.com/unitreerobotics/unitree_sdk2) GitHub repository
+
+[3] [google-deepmind/mujoco](https://github.com/google-deepmind/mujoco/releases) binary releases
