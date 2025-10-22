@@ -12,6 +12,7 @@ RUN apt-get update \
         build-essential \
         libeigen3-dev \
         libfmt-dev \
+        vim \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone, build, and install unitree_sdk2

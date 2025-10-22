@@ -10,6 +10,10 @@ The image name `unitree_mujoco` can be customized. All necessary components are 
 ### 2. Go2
 
 #### 2.1 Launch the Simulator
+```
+./launch.sh
+```
+which is essentially
 
 ```sh
 xhost +local:docker
@@ -22,9 +26,8 @@ docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $PRO
 *   **GPU and CPU Support:** The current configuration is optimized for NVIDIA GPUs.
     *   **With GPU:** The `dockerfile` uses `nvidia/opengl:base-ubuntu22.04` as the base image. The `--gpus all` flag is necessary in the `docker run` command. This requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) to be installed on the host machine.
     *   **Without GPU:** For CPU-only execution, modify the `dockerfile` to use a base image like `ubuntu:22.04` and remove the `--gpus all` flag from the `docker run` command.
-*   `--device=/dev/input:/dev/input` enables the xbox controller in the container (see g1 demo).
+*   `--device=/dev/input:/dev/input` enables the xbox controller in the container (see g1 demo). The controller has to be connected before the container starts.
 
-Or you can just `./launch.sh`
 
 Once inside the container, start the simulation:
 ```sh
