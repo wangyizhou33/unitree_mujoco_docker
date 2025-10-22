@@ -10,5 +10,6 @@ docker run -it --rm \
            -v /tmp/.X11-unix:/tmp/.X11-unix \
            -v $PROJECT_SOURCE_DIR:/workspace \
            --gpus all \
+           --device=/dev/input:/dev/input \
            --name sim \
            unitree_mujoco bash
