@@ -47,7 +47,7 @@ cd /unitree_mujoco/example/cpp/build
 ```
 
 A successful launch will display the following simulation environment:
-![image](./docs/screenshot.jpg)
+![image](./docs/go2.jpg)
 
 
 ### 3 G1
@@ -71,8 +71,9 @@ cmake ..
 make -j12
 ./g1_deploy_real
 ```
-On the `g1_deploy_real` controller is up and running, release the virtual spring band by pressing the `9` key on the keyboard. Control the motion of the robot using a xbox controller.
+Once the `g1_deploy_real` controller is up and running, release the virtual spring band by pressing the `9` key on the keyboard. Control the motion of the robot using a xbox controller.
 
+![image](./docs/g1.gif)
 
 ### TODO
 - [ ] Refactor the `dockerfile` to download the MuJoCo binary during the image build process instead of relying on a local copy.
